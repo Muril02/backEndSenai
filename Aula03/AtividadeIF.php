@@ -80,7 +80,6 @@
 // }
 
 
-
 // Contagem progressiva 
 
 // for($i = 0; $i <= 10; $i++){
@@ -116,12 +115,57 @@
 
 // Temperatura
 
-$temp = (float) readline(prompt: "Digite a temperatura: ");
+// $temp = (float) readline(prompt: "Digite a temperatura: ");
 
-if($temp < 15){
-    echo "Frio";
-}elseif($temp > 15 && $temp <= 25){
-    echo "Agrádavel";
-}else{
-    echo "Quente";
+// if($temp < 15){
+//     echo "Frio";
+// }elseif($temp > 15 && $temp <= 25){
+//     echo "Agrádavel";
+// }else{
+//     echo "Quente";
+// }
+
+
+// Menu interativo
+
+$numero = (int) readline("
+1- Olá\n
+2- Data\n
+3- Sair\n
+Digite o que irá fazer: ");
+
+for($i = 0; $i >5; $i++){
+
+echo $numero;
+
+    switch($numero){
+    case 1:
+        echo "Olá";
+        echo "1- Olá\n
+              2- Data\n
+              3- Sair ";
+        break;
+    case 2:
+        echo "Data atual: 13/08";
+        break;
+    case 3: 
+        echo "Sair";
+        break;
+    default: 
+        'Inválido';
+        break;
 }
+
+}
+
+
+// Comparar tipos variáveis
+
+// $var1 = readline("Valor 1: ");
+// $var2 = readline("Valor 2: ");
+
+// if(gettype($var1) == gettype($var2)){
+//     echo "Suas váriaveis são iguais!. Primeiro valor tipo " . gettype($var1) . ". E segundo valor " . gettype($var2);
+// }else{
+//     echo "Suas váriaveis são diferentes!. Primeiro valor tipo " . gettype($var1) . ". E segundo valor " . gettype($var2);
+// }
