@@ -154,10 +154,7 @@ echo $numero;
     default: 
         'Inválido';
         break;
-}
-
-}
-
+}}
 
 // Comparar tipos variáveis
 
