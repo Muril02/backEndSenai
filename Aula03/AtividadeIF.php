@@ -138,26 +138,23 @@
 
 // echo $numero;
 
-//     switch($numero){
-//     case 1:
-//         echo "Olá";
-//         echo "1- Olá\n
-//               2- Data\n
-//               3- Sair ";
-//         break;
-//     case 2:
-//         echo "Data atual: 13/08";
-//         break;
-//     case 3: 
-//         echo "Sair";
-//         break;
-//     default: 
-//         'Inválido';
-//         break;
-// }
-
-// }
-
+    switch($numero){
+    case 1:
+        echo "Olá";
+        echo "1- Olá\n
+              2- Data\n
+              3- Sair ";
+        break;
+    case 2:
+        echo "Data atual: 13/08";
+        break;
+    case 3: 
+        echo "Sair";
+        break;
+    default: 
+        'Inválido';
+        break;
+}}
 
 // Comparar tipos variáveis
 
