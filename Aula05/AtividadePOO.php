@@ -15,6 +15,15 @@ class Cachorro
         $this->castrado = $castrado;
         $this->sexo = $sexo;
     }
+
+    public function latir(){
+        echo "O cachorro $this->nome da raça $this->raca latiu\n";
+    }
+
+    public function mijada(){
+        echo "O cachorro $this->nome da raça $this->raca mijou no poste\n";
+    }
+
 }
 
 $cachorro1 = new Cachorro("Dobberman", "Rodolfo", false, "M");
@@ -28,6 +37,9 @@ $cachorro8 = new Cachorro("Border Collie", "Spike", true, "M");
 $cachorro9 = new Cachorro("Corgi", "Bomber", true, "M");
 $cachorro10 = new Cachorro("Dobberman", "Rodolfo", false, "M");
 
+// $cachorro9->latir();
+// $cachorro2->mijada();
+// $cachorro3->mijada();
 
 class Usuario
 {
@@ -36,7 +48,6 @@ class Usuario
     public $sexo;
     public $email;
     public $estado_civil;
-    public $civil;
     public $cidade;
     public $estado;
     public $endereco;
@@ -53,6 +64,35 @@ class Usuario
         $this->estado = $estado;
         $this->endereco = $endereco;
         $this->cep = $cep;
+    }
+
+    public function testandoReservista(){
+        if($this->sexo == "M"){
+            echo "Apresente seu certificado de reservista do tiro de guerra!\n";
+        }else{
+            echo "Tudo certo!\n";
+        }
+    }
+
+    public function pedindoAumento(){
+        $texto = readline("Digite quanto quer de aumento: ");
+        if(floatval($texto) <= 1){
+            echo "O seu pedido de aumento de R$$texto foi aprovado!\n";
+        }else{
+            echo "O seu pedido de aumento de R$$texto foi negado! Ta pedindo demais.\n";
+        }
+    }
+
+    public function casamento($anos_casado){
+        switch($this->estado_civil){
+            case "Casado":
+            echo "Parabéns pelo seu casamento de $anos_casado!";
+            break;
+            default: 
+            echo "Oloco";
+            break;
+        }
+        
     }
 }
 
@@ -92,5 +132,9 @@ $user3 = new Usuario(
     "68815-970"
 );
 
+$user1->pedindoAumento();
+$user3->testandoReservista();
+$user3->casamento(2);
 
   
+

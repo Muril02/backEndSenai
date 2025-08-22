@@ -16,6 +16,14 @@ class Carro
         $this->revisao = $revisao;
         $this->n_donos = $n_donos;
     }
+
+    public function exibirInfo(){
+        echo "Marca: $this->marca - Modelo> $this->modelo - Ano: $this->ano\n";
+    }
+
+    public function ligar(){
+        echo "O carro $this->modelo está ligado\n";
+    }
 }
 
 
@@ -26,3 +34,5 @@ $carro4 = new Carro("Fiat", "Uno", "2010", true, 5 );
 $carro5 = new Carro("Chevrolet", "Corsa", "2008", false, 2 );
 $carro6 = new Carro("Volkswagen", "Polo", "1990", false, 2 );
  
+$carro3->ligar();
+$carro1->exibirInfo();

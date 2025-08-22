@@ -154,7 +154,7 @@
     default: 
         'Inválido';
         break;
-}}
+}
 
 // Comparar tipos variáveis
 
