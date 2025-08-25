@@ -128,15 +128,15 @@
 
 // Menu interativo
 
-$numero = (int) readline("
-1- Olá\n
-2- Data\n
-3- Sair\n
-Digite o que irá fazer: ");
+// $numero = (int) readline("
+// 1- Olá\n
+// 2- Data\n
+// 3- Sair\n
+// Digite o que irá fazer: ");
 
-for($i = 0; $i >5; $i++){
+// for($i = 0; $i >5; $i++){
 
-echo $numero;
+// echo $numero;
 
     switch($numero){
     case 1:
@@ -155,9 +155,6 @@ echo $numero;
         'Inválido';
         break;
 }
-
-}
-
 
 // Comparar tipos variáveis
 
