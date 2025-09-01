@@ -6,8 +6,6 @@ class Produtos{
     public $fornecedor;
     public $valor;
     public $quantidade_disp;
-
-
 }
 
 
