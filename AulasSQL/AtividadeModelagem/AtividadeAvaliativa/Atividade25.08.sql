@@ -43,4 +43,6 @@ alter table Instituicao rename to Cidade;
 alter table Cidade change Icodigo Ccod int Primary key auto_increment;
 alter table Peca change Cidade Ccod int;
 alter table Projeto change Cidade Ccod int;
+alter table Projeto add constraint foreign key(Ccod) references Cidade(Ccod);
+alter table Peca add constraint foreign key(Ccod) references Cidade(Ccod);
 
