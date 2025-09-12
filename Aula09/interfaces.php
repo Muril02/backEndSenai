@@ -53,20 +53,17 @@ class Quadrado implements Forma{
         return $calcular;
     }
 
-
 }
 
 
 
 class Circulo implements Forma{
     
-    
     public function calcularArea($raio, $valor){
         $calcular = pi()*($raio*$raio);
         echo "A áreia do seu círculo é: $calcular\n";
     }
 }
-
 
 
 
@@ -79,6 +76,20 @@ class Pentagono implements Forma{
 
 $pentagono = new Pentagono();
 $pentagono->calcularArea(10, 5);
+
+
+class Hexagono implements Forma{
+    public function calcularArea($valor, $valor2){
+        $raiz = sqrt(3);
+        $calc = (3 * pow($valor, 2)) / 2;
+
+        echo "O valor da área do seu Hexagono é: $calc √3 cm²";
+    }
+}
+
+$hexagon = new Hexagono();
+$hexagon->calcularArea(9,0);
+
 
 // $teste = new Quadrado();
 // $teste->calcularArea(5.36, 0);
