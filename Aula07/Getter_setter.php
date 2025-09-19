@@ -52,7 +52,7 @@ class Pessoa
 
     public function setIdade($idade)
     {
-        $this->idade = abs((int)$idade);
+        $this->idade = abs((double)$idade);
     }
 
     public function getIdade()
