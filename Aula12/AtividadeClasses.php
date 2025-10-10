@@ -171,8 +171,144 @@ class PraiaRio
 
 // Exercicio 2
 
+// Herois -> Local
+// Herois se relacionam com local
+
 class Herois{
     public $Nome;
 
+    public function __construct($nome){
+        $this->Nome = $nome;
+    }
     
+
+    public function Treinar(){
+        return `$this->Nome está treinando no cotil`;
+    }
+
+    public function DoarBrinquedo(){
+        return `$this->Nome doou brinquedos`;
+    }
+
+}
+
+class Local{
+    public $NomeLocal;
+
+    public function __construct($nomeLocal){
+        $this->NomeLocal = $nomeLocal;
+    }
+}
+
+
+// Fantasia e destino
+
+class Personagens{
+    public $Nome;
+
+    public function __construct($nome){
+        $this->Nome = $nome;
+    }
+
+    public function Amar(){
+        return `$this->Nome está amando`;
+    }
+
+    public function Comer(){
+        return `$this->Nome está comendo`;
+    }
+} 
+
+
+// Ciclo de vida
+
+// Planeta -> Pessoa
+
+class Pessoa{
+
+    public $NomePessoa;
+
+    public function __construct($nomePessoa){
+        $this->NomePessoa = $nomePessoa;
+    }
+    public function Engravidar(){
+        `$this->NomePessoa está grávida`;
+    }
+    public function Nascer(){
+        `$this->NomePessoa nasceu!`;
+    }
+    public function Escolhas(){
+        `$this->NomePessoa escolheu!`;
+    }
+    public function DoarSangue(){
+        `$this->NomePessoa doou sangue!`;
+    }
+    public function Cresceu(){
+        `$this->NomePessoa Cresceu!`;
+    }
+
+}
+class Planeta{
+
+    public $NomePlaneta;
+
+    public function __construct($nomePlaneta){
+        $this->NomePlaneta = $nomePlaneta;
+    }
+}
+
+
+// Cenário 5
+
+// Usuarios -> Livros
+
+class Usuarios{
+    public $NomeUser;
+    public $TipoUser;
+
+    public function __construct($nomeUser, $tipoUser){
+        $this->NomeUser = $nomeUser;
+        $this->TipoUser = $tipoUser;
+    }
+
+    public function FazerEmprestimo(){
+        `$this->NomeUser emprestou um livro!`;
+    }
+}
+class Livros{
+    public $NomeLivro;
+    public $TipoLivro;
+
+    public function __construct($nomeLivro, $tipoLivro){
+        $this->NomeLivro = $nomeLivro;
+        $this->TipoLivro = $tipoLivro;
+    }
+
+}
+
+
+// Cenário 6
+
+// Clientes -> Filme
+
+class Clientes{
+    public $NomeCliente;
+
+    public function __construct($nomeCliente){
+        $this->NomeCliente = $nomeCliente;
+    }
+
+    public function ComprarIngresso(){
+        `$this->NomeCliente comprou um ingresso!`;
+    }
+
+}
+
+
+class Filme{
+    public $NomeFilme;
+
+    public function __construct($nomeFilme){
+        $this->NomeFilme = $nomeFilme;
+    }
 }
