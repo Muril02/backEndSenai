@@ -102,7 +102,7 @@ class Aluno {
 // Ex 4
 
 
-class Produto{
+class Produtos{
 
     private $nome;
     private $preco;

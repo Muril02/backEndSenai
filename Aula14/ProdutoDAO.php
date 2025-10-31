@@ -30,7 +30,6 @@ class ProdutoDAO{
 
     public function salvarNoArquivo(){
         $variavel = [];
-
         foreach($this->Produtos as $codigo => $valor){
             $variavel[$codigo] = [
                 'codigo' => $valor->getCodigo(),
@@ -38,12 +37,14 @@ class ProdutoDAO{
                 'preco' => $valor->getPreco()
             ];
         }
-        file_put_contents($this->Arquivo, json_encode($variavel, JSON_PRETTY_PRINT));
+        file_put_contents($this->Arquivo, json_encode($variavel,  JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
     }
 
 
     public function adicionarProduto(Produto $produto){
         $this->Produtos[$produto->getCodigo()] = $produto;
+        (float)$this->Produtos[$produto->getCodigo()]->getPreco();
+        echo var_dump($this->Produtos);
         $this->salvarNoArquivo();
     }
 
@@ -60,7 +61,7 @@ class ProdutoDAO{
         // Método update -> para atualizar informações de um objeto ja existente
         if(isset($this->Produtos[$codigo])) {
             $this->Produtos[$codigo]->setNome($nome);
-            $this->Produtos[$codigo]->setPreco($preco);
+            $this->Produtos[$codigo]->setPreco((float)$preco);
         }
         $this->salvarNoArquivo();
     }

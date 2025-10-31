@@ -37,7 +37,11 @@ class Produto{
         $this->Nome = ucwords(strtolower($valorNome));
     }
     public function setPreco($valorPreco){
-        $this->Preco = number_format($valorPreco);
+        echo gettype($valorPreco);
+        echo "\n";
+        echo " \n";
+        $this->Preco =  $valorPreco;
+        // number_format($valorPreco, 2, ",", ".");
     }
 
 

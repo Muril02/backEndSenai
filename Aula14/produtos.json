@@ -1,0 +1,42 @@
+{
+    "1": {
+        "codigo": 1,
+        "nome": "Tomate",
+        "preco": 12.6
+    },
+    "2": {
+        "codigo": 2,
+        "nome": "Maca(sem ç)",
+        "preco": 5.9
+    },
+    "3": {
+        "codigo": 3,
+        "nome": "Queijo Brie",
+        "preco": 99
+    },
+    "4": {
+        "codigo": 4,
+        "nome": "Igurte Grego",
+        "preco": 11
+    },
+    "5": {
+        "codigo": 5,
+        "nome": "Guarana Jesus (sem á)",
+        "preco": 1.99
+    },
+    "6": {
+        "codigo": 6,
+        "nome": "Bolacha Bono",
+        "preco": 12.32
+    },
+    "7": {
+        "codigo": 7,
+        "nome": "Prestobarba Bic",
+        "preco": 9.55
+    },
+    "8": {
+        "codigo": 8,
+        "nome": "Desinfetante Barbarex",
+        "preco": 18.4
+    }
+}
