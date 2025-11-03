@@ -1,55 +1,76 @@
 <?php
 
-
+// Define constants outside the class for better organization and scope
 define("DB_HOST", "localhost");
 define("DB_PASS", "senaisp");
 define("DB_USER", "root");
 define("DB_NAME", "livraria");
 
-$db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-
-if($db->connection_error){
-    echo "Erro de conexão";
-}
-
 class Dados{
 
-    private $db;
+    private $dbClasse;
 
     public function __construct(){
-        $this->db = $db;
+        
+        $db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        
+        if($db->connect_error){
+            
+            die("Erro de conexão: " . $db->connect_error);
+        }
+        $this->dbClasse = $db;
     }
 
+    public function inserirDados(){
 
-    public function inserirDados($cpf, $email, $telefone, $data_nasc){
+      
+        if (!isset($_POST["cpf"], $_POST["email"], $_POST["telefone"], $_POST["data_nasc"])) {
+            
+            echo "Erro: Dados do formulário ausentes (POST).";
+            return false; 
+        }
 
-    $query = "INSERT INTO clientes(cpf, email, telefone, data_nascimento) VALUES (?, ?, ?, ?)";
-    $operacao = $this->db->prepare($query);
-    if($operacao === false){
-        return false;
+        $cpf = $_POST["cpf"];
+        $email = $_POST["email"];
+        $telefone = $_POST["telefone"];
+        $data_nasc = $_POST["data_nasc"];
+
+        $query = "INSERT INTO clientes(cpf, email, telefone, data_nascimento) VALUES (?, ?, ?, ?)";
+        $operacao = $this->dbClasse->prepare($query);
+
+        if($operacao === false){
+            echo "Erro na preparação da consulta: " . $this->dbClasse->error;
+            return false;
+        }
+
+        $operacao->bind_param("ssss", $cpf, $email, $telefone, $data_nasc);
+        
+        $resultado = $operacao->execute();
+
+        if($resultado){
+            echo "Dados registrados com sucesso!";
+        } else{
+            echo "Dados não registrados. Erro: " . $operacao->error;
+        }
+
+        $operacao->close(); 
+        return $resultado;
     }
-
-    $operacao->bind_param("ssss", $cpf, $email, $telefone, $data_nasc);
     
-    $resultado = $operacao->execute();
-    return $resultado;
+
+    public function __destruct() {
+        if ($this->dbClasse) {
+            $this->dbClasse->close();
+        }
     }
+
+   
 }
 
-$banco = new Dados($db);
-
-$cpf = $_POST["cpf"];
-$email = $_POST["email"];
-$telefone = $_POST["telefone"];
-$data_nasc = $_POST["data_nasc"];
-
-
-$enviar = $banco->inserirDados($cpf, $email, $telefone, $data_nasc);
-if($enviar){
-    echo  "Dados registrados";
-} else{
-    echo "Dados não registrados";
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+    $dados = new Dados(); 
+    $dados->inserirDados(); 
+} else {
+    // If someone tries to access insert2.php directly without submitting the form
+    echo "Acesso inválido. Use o formulário para enviar dados.";
 }
-
-$db->close;
-

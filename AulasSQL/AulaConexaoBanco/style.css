@@ -1,0 +1,86 @@
+/* Readable, High-Contrast Style */
+
+/* Body styles: Clear background and professional font */
+body {
+    background-color: #f0f8ff; /* Alice Blue for a light, clean background */
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333; /* Dark gray for main text */
+    padding: 20px;
+    margin: auto;
+    max-width: 800px; /* Constrain content width for better reading */
+}
+
+/* Heading: Clear, distinct, and visible */
+h2 {
+    font-size: 2.5em;
+    color: #007bff; /* Bright blue for emphasis */
+    text-align: left;
+    margin-bottom: 20px;
+    border-bottom: 3px solid #007bff;
+    padding-bottom: 5px;
+}
+
+/* Table styles: Defined borders and spacing */
+table {
+    width: 100%;
+    border-collapse: collapse; /* Standard table borders */
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Table Headers (th) */
+th {
+    background-color: #333; /* Dark background */
+    color: #fff; /* White text for high contrast */
+    text-align: left;
+    padding: 12px 15px;
+    font-weight: bold;
+    border: 1px solid #444;
+}
+
+/* Table Data Cells (td) */
+td {
+    background-color: #ffffff; /* White cell background */
+    color: #333;
+    padding: 10px 15px;
+    border: 1px solid #ddd; /* Light gray border */
+}
+
+/* Highlight every other row (Zebra striping) for readability */
+tr:nth-child(even) td {
+    background-color: #f2f2f2; /* Light gray stripe */
+}
+
+/* Anchor links (Ações/Excluir): Clear and easy to click */
+a {
+    color: #dc3545; /* Red color for 'Delete' style links */
+    text-decoration: none; /* Remove default underline */
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: #0056b3; /* Blue on hover to indicate interactivity */
+    text-decoration: underline; /* Add underline on hover */
+}
+
+/* The Button: Highly visible call-to-action */
+button {
+    background-color: #28a745; /* Green for 'Go back' action */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover {
+    background-color: #218838; /* Slightly darker green on hover */
+    transform: translateY(-1px);
+}
