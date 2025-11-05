@@ -1,0 +1,9 @@
+{
+    "Suco": {
+        "Nome": "Suco",
+        "Categoria": "Cerveja",
+        "Volume": 567,
+        "Valor": 56,
+        "Qtde": 45
+    }
+}
