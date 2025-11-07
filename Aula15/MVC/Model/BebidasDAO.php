@@ -59,11 +59,16 @@ class BebidasDAO{
     }
 
 
-    public function atualizarBebida($nome, $valor, $Qtde){
-        if(isset($this->BebidasArray[$nome])){
-            $this->BebidasArray[$nome]->setNome($nome);          
-            $this->BebidasArray[$nome]->setValor($valor);
-            $this->BebidasArray[$nome]->setQtde($Qtde);
+    public function atualizarBebida($nomeOriginal ,$nome, $categoria, $volume, $valor, $Qtde){
+        if(isset($this->BebidasArray[$nomeOriginal])){
+
+            $bebida = $this->BebidasArray[$nomeOriginal];
+
+            $bebida->setNome($nome);          
+            $bebida->setValor($valor);
+            $bebida->setQtde($Qtde);
+            $bebida->setCat($categoria);
+            $bebida->setVolu($volume);
         }
         $this->SalvarNoArquivo();
     }

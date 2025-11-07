@@ -1,9 +1,9 @@
 {
-    "Suco": {
-        "Nome": "Suco",
-        "Categoria": "Cerveja",
-        "Volume": 567,
-        "Valor": 56,
-        "Qtde": 45
+    "Poty": {
+        "Nome": "Kapo",
+        "Categoria": "Vinho",
+        "Volume": 444,
+        "Valor": 0.04,
+        "Qtde": 90
     }
 }

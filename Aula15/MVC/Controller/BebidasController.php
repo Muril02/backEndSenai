@@ -16,16 +16,14 @@ class BebidaController {
     }
 
     // Cadastra nova bebida
-    public function criar($nome, $categoria, $volume, $valor, $qtde) {
-
-       
+    public function criar($nome, $categoria, $volume, $valor, $qtde) {       
         $bebida = new Bebidas( $nome, $categoria, $volume, $valor, $qtde);
         $this->dao->AdicionarBebida($bebida);
     }
 
     // Atualiza bebida existente
-    public function atualizar( $nome, $valor, $qtde) {
-        $this->dao->atualizarBebida( $nome, $valor, $qtde);
+    public function atualizar( $nomeOriginal,$nome, $categoria, $volume,  $valor, $qtde, ) {
+        $this->dao->atualizarBebida($nomeOriginal , $nome, $categoria, $volume, $valor, $qtde);
     }
 
     // Exclui bebida
