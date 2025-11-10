@@ -1,0 +1,75 @@
+
+
+CREATE TABLE Cliente (
+    Id_cliente INT PRIMARY KEY AUTO_INCREMENT,
+    Nome VARCHAR(150) NOT NULL,
+    CPF VARCHAR(30) UNIQUE NOT NULL,
+    Telefone VARCHAR(50),
+    CEP VARCHAR(50)
+);
+
+CREATE TABLE Mecanico (
+    Id_mecanico INT PRIMARY KEY AUTO_INCREMENT,
+    Nome VARCHAR(150) NOT NULL,
+    CPF VARCHAR(30) UNIQUE NOT NULL );
+
+CREATE TABLE Servico (
+    Id_servico INT PRIMARY KEY AUTO_INCREMENT,
+    Nome_servico VARCHAR(100) NOT NULL,
+    Valor DECIMAL(10, 2) NOT NULL,
+    Descricao TEXT
+);
+
+CREATE TABLE Produtos (
+    Id_peca INT PRIMARY KEY AUTO_INCREMENT, 
+    Nome VARCHAR(100) NOT NULL,
+    Tipo VARCHAR(100),
+    Peso DECIMAL(10, 2),
+    Valor DECIMAL(10, 2)
+);
+
+
+CREATE TABLE Veiculo (
+    Id_veiculo INT PRIMARY KEY AUTO_INCREMENT,
+    Cor VARCHAR(50),
+    Fabricante VARCHAR(150),
+    Modelo VARCHAR(100),
+    Ano_fabri INT, 
+    Id_cliente INT NOT NULL, 
+    FOREIGN KEY(Id_cliente) REFERENCES Cliente (Id_cliente)
+);
+
+CREATE TABLE Ordem_servico (
+    Id_os INT PRIMARY KEY AUTO_INCREMENT,
+    Id_veiculo INT NOT NULL, 
+    Id_mecanico INT NOT NULL, 
+    FOREIGN KEY(Id_veiculo) REFERENCES Veiculo (Id_veiculo),
+    FOREIGN KEY(Id_mecanico) REFERENCES Mecanico (Id_mecanico)
+);
+
+
+CREATE TABLE ServicoOrdens (
+    Id_odServ INT PRIMARY KEY AUTO_INCREMENT, 
+    Id_os INT NOT NULL,
+    Id_servico INT NOT NULL,
+    FOREIGN KEY(Id_os) REFERENCES Ordem_servico (Id_os),
+    FOREIGN KEY(Id_servico) REFERENCES Servico (Id_servico)
+);
+
+CREATE TABLE Estoque (
+    Id_estoque INT PRIMARY KEY AUTO_INCREMENT,
+    Id_produto INT NOT NULL, -- Must be linked to a Product (1,1)
+    Quantidade DECIMAL(10, 2) NOT NULL,
+    Data_entrada DATE NOT NULL,
+    FOREIGN KEY(Id_produto) REFERENCES Produtos (Id_peca) 
+);
+
+CREATE TABLE Produto_ordem (
+    
+    Id_prodOrdem INT PRIMARY KEY AUTO_INCREMENT,
+    Id_os INT NOT NULL,
+    Id_produto INT NOT NULL, 
+    Quantidade DECIMAL(10, 2) NOT NULL, 
+    FOREIGN KEY(Id_os) REFERENCES Ordem_servico (Id_os),
+    FOREIGN KEY(Id_produto) REFERENCES Produtos (Id_peca) 
+   );
