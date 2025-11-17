@@ -65,7 +65,6 @@ CREATE TABLE Estoque (
 );
 
 CREATE TABLE Produto_ordem (
-    
     Id_prodOrdem INT PRIMARY KEY AUTO_INCREMENT,
     Id_os INT NOT NULL,
     Id_produto INT NOT NULL, 
