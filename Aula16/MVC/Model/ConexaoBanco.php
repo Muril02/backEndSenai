@@ -9,7 +9,7 @@ class conexaoBanco{
         $dbname = "vendaBebidas";
         $host = 'localhost';
         $user = "root";
-        $senha = "Murilo123";
+        $senha = "Murilo1235@";
 
 
         if(self::$conexao == null){
