@@ -1,0 +1,56 @@
+   -- Atividade SQL
+   
+   -- SELECT
+   
+   SELECT *FROM Veiculo WHERE Fabricante = "FORD";
+   SELECT * FROM Ordem_servico WHERE Data < "2025-05-01";
+   SELECT * FROM Mecanico WHERE Especialdiade = "Injeção Eletrônica";
+   SELECT * FROM Ordem_servico WHERE Status = "Aguardando peça";
+   SELECT * FROM Produtos WHERE Quantidade < 5;
+   SELECT Id_veiculo, Count(*) as QuantidadeVezes FROM Ordem_servico GROUP BY Id_veiculo HAVING COUNT(*) > 1;
+   SELECT * FROM Ordem_servico WHERE Id_mecanico = 3;
+   
+   -- UPDATE
+   
+   UPDATE Produtos set Valor = 0.05 * Valor;
+   UPDATE Ordem_servico set Status = "Concluído" WHERE Id_os = 105;
+   UPDATE Ordem_servico set Data_conclusao = "2025-11-24" WHERE Status = "Em execução" and Data > "2025-10-30";
+   
+   
+   -- ALTER TABLE 
+   
+   Alter table Cliente add column Email varchar(100);
+   Alter table Mecanico add column Especialidades varchar(100);
+   Alter table Ordem_servico drop column Data_conclusao;
+   
+   
+   -- JOIN
+   
+   SELECT os.*, cli.Nome, vei.Placa, os.Data FROM Ordem_servico os
+   JOIN Veiculo vei ON os.Id_veiculo = vei.Id_veiculo
+   JOIN Cliente cli ON vei.Id_cliente = cli.Id_cliente;
+   
+   SELECT po.*, prod.Nome FROM Produto_ordem po
+   JOIN Produtos prod ON po.Id_produto = prod.Id_peca
+   WHERE po.Id_os = 50;
+   
+   SELECT os.*, meca.Nome FROM Ordem_servico os
+   JOIN Mecanico meca ON os.Id_mecanico = meca.Id_mecanico
+   WHERE os.Id_os = 50;
+   
+   -- INNER JOIN
+   
+SELECT Placa, Modelo FROM Veiculo vei
+INNER JOIN Ordem_servico os WHERE vei.Id_veiculo = os.Id_veiculo;
+
+SELECT cli.Nome FROM Cliente cli
+INNER JOIN Veiculo vei WHERE vei.Fabricante = "Volkswagen";
+
+SELECT meca.Nome FROM Mecanico meca
+INNER JOIN Ordem_servico os WHERE meca.Id_mecanico = os.Id_mecanico;
+
+-- LEFT JOIN
+
+SELECT cli.Nome, os.Id_os FROM Cliente cli
+INNER JOIN Ordem_servico os;
+

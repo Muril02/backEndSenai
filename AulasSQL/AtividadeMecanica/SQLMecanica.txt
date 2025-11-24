@@ -1,4 +1,5 @@
-
+create database mecanica;
+use mecanica;
 
 CREATE TABLE Cliente (
     Id_cliente INT PRIMARY KEY AUTO_INCREMENT,
@@ -11,7 +12,9 @@ CREATE TABLE Cliente (
 CREATE TABLE Mecanico (
     Id_mecanico INT PRIMARY KEY AUTO_INCREMENT,
     Nome VARCHAR(150) NOT NULL,
-    CPF VARCHAR(30) UNIQUE NOT NULL );
+    Especialidade varchar(100),
+    CPF VARCHAR(30) UNIQUE NOT NULL);
+
 
 CREATE TABLE Servico (
     Id_servico INT PRIMARY KEY AUTO_INCREMENT,
@@ -25,9 +28,9 @@ CREATE TABLE Produtos (
     Nome VARCHAR(100) NOT NULL,
     Tipo VARCHAR(100),
     Peso DECIMAL(10, 2),
-    Valor DECIMAL(10, 2)
+    Valor DECIMAL(10, 2),
+    Quantidade int
 );
-
 
 CREATE TABLE Veiculo (
     Id_veiculo INT PRIMARY KEY AUTO_INCREMENT,
@@ -35,18 +38,22 @@ CREATE TABLE Veiculo (
     Fabricante VARCHAR(150),
     Modelo VARCHAR(100),
     Ano_fabri INT, 
+    Placa varchar(50),
     Id_cliente INT NOT NULL, 
     FOREIGN KEY(Id_cliente) REFERENCES Cliente (Id_cliente)
 );
+
 
 CREATE TABLE Ordem_servico (
     Id_os INT PRIMARY KEY AUTO_INCREMENT,
     Id_veiculo INT NOT NULL, 
     Id_mecanico INT NOT NULL, 
+    Data date,
+    Data_conclusao date,
+    Status varchar(100),
     FOREIGN KEY(Id_veiculo) REFERENCES Veiculo (Id_veiculo),
     FOREIGN KEY(Id_mecanico) REFERENCES Mecanico (Id_mecanico)
 );
-
 
 CREATE TABLE ServicoOrdens (
     Id_odServ INT PRIMARY KEY AUTO_INCREMENT, 
@@ -58,11 +65,13 @@ CREATE TABLE ServicoOrdens (
 
 CREATE TABLE Estoque (
     Id_estoque INT PRIMARY KEY AUTO_INCREMENT,
-    Id_produto INT NOT NULL, -- Must be linked to a Product (1,1)
+    Id_produto INT NOT NULL,
     Quantidade DECIMAL(10, 2) NOT NULL,
     Data_entrada DATE NOT NULL,
     FOREIGN KEY(Id_produto) REFERENCES Produtos (Id_peca) 
 );
+
+select * from cliente;
 
 CREATE TABLE Produto_ordem (
     Id_prodOrdem INT PRIMARY KEY AUTO_INCREMENT,
@@ -72,3 +81,15 @@ CREATE TABLE Produto_ordem (
     FOREIGN KEY(Id_os) REFERENCES Ordem_servico (Id_os),
     FOREIGN KEY(Id_produto) REFERENCES Produtos (Id_peca) 
    );
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   

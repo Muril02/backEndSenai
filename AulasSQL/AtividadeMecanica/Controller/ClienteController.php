@@ -14,38 +14,25 @@ class ClienteController {
         $this->dao = new ClienteDAO();
     }
 
-    /**
-     * Registra um novo cliente.
-     * @param Cliente $cliente O objeto Cliente a ser registrado.
-     * @return bool Retorna true em caso de sucesso, false em caso de falha.
-     */
     public function Registrar(Cliente $cliente) {
         return $this->dao->RegistrarCliente($cliente);
     }
 
-    /**
-     * Lista todos os clientes do banco de dados.
-     * @return array|false Retorna um array associativo dos clientes ou false em caso de erro.
-     */
     public function Listar() {
-        // Simplesmente chama o método do DAO.
         return $this->dao->ListarCliente();
     }
 
     /**
-     * Altera os dados de um cliente existente usando o CPF como chave.
-     * @param Cliente $cliente O objeto Cliente com os dados atualizados.
+     * CORREÇÃO ALTERAR: Agora aceita $cpfOriginal para identificação do registro.
+     * @param Cliente $cliente O objeto Cliente com os dados atualizados (inclui o novo CPF).
+     * @param string $cpfOriginal O CPF original usado para identificar o registro no DB.
      * @return bool Retorna true em caso de sucesso, false em caso de falha.
      */
-    public function Alterar(Cliente $cliente) {
-        return $this->dao->AlterarCliente($cliente);
+    public function Alterar(Cliente $cliente, $cpfOriginal) {
+        // Passa o objeto e a chave original para o DAO.
+        return $this->dao->AlterarCliente($cliente, $cpfOriginal);
     }
 
-    /**
-     * Exclui um cliente pelo CPF.
-     * @param string $cpf O CPF do cliente a ser excluído.
-     * @return bool Retorna true em caso de sucesso, false em caso de falha.
-     */
     public function Excluir($cpf) {
         return $this->dao->ExcluirCliente($cpf);
     }

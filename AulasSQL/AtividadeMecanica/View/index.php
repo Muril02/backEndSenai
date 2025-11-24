@@ -12,7 +12,6 @@ require_once __DIR__ . "/../Model/Cliente.php";
 $controller = new ClienteController;
 $message = "";
 $clients = []; // Para armazenar a lista de todos os clientes
-
 // --- Lógica de Manipulação de Requisições ---
 
 if( $_SERVER["REQUEST_METHOD"] == "POST"){
@@ -23,7 +22,6 @@ if( $_SERVER["REQUEST_METHOD"] == "POST"){
 
     if ($acao == "criar" && $is_complete) {
         $cliente = new Cliente($_POST["nome"], $_POST["cpf"], $_POST["cep"], $_POST["telefone"]);
-        // FIX LISTAGEM 1/3: Verifica o retorno do Controller (que agora retorna bool)
         if ($controller->Registrar($cliente)) {
             $message = "✅ Cliente " . htmlspecialchars($_POST['nome']) . " cadastrado com sucesso!";
         } else {
@@ -33,13 +31,18 @@ if( $_SERVER["REQUEST_METHOD"] == "POST"){
         
     } 
     
-    else if ($acao == "alterar" && $is_complete) {
-        // Cria o objeto Cliente, o CPF será usado como chave WHERE no Controller/DAO
+    // CORREÇÃO ALTERAR (LÓGICA POST): Adiciona a verificação e captura do CPF Original
+    else if ($acao == "alterar" && $is_complete && isset($_POST["cpf_original_alterar"])) {
+        // Cria o objeto Cliente com os novos dados (incluindo o possivelmente novo CPF)
         $cliente = new Cliente($_POST["nome"], $_POST["cpf"], $_POST["cep"], $_POST["telefone"]);
-        if ($controller->Alterar($cliente)) {
-            $message = "✅ Cliente CPF " . htmlspecialchars($_POST['cpf']) . " alterado com sucesso!";
+        // Captura o CPF original (chave WHERE)
+        $cpf_original = $_POST["cpf_original_alterar"]; 
+
+        // Passa o objeto Cliente (novos dados) e o CPF original (chave WHERE) para o Controller
+        if ($controller->Alterar($cliente, $cpf_original)) {
+            $message = "✅ Cliente CPF " . htmlspecialchars($cpf_original) . " alterado com sucesso! Novo CPF: " . htmlspecialchars($_POST['cpf']) . ".";
         } else {
-            $message = "❌ Erro ao alterar o cliente. Verifique o CPF ou dados.";
+            $message = "❌ Erro ao alterar o cliente. Verifique o CPF ou dados. Pode ser que o novo CPF já esteja em uso.";
         }
     } 
     
@@ -54,19 +57,18 @@ if( $_SERVER["REQUEST_METHOD"] == "POST"){
     } 
     
     else if ($acao != "listar") {
-        // Apenas para ações POST que não são "listar" (que é apenas para GET)
         $message = "⚠️ Formulário incompleto ou ação desconhecida.";
     }
 }
 
 // --- Lógica de Leitura/Listagem (Executada a cada carregamento) ---
 
-// FIX LISTAGEM 2/3: Garante que o método Listar do Controller seja chamado
+// Chama o Listar, que agora usa a consulta simplificada
 $clients_raw = $controller->Listar();
 if (is_array($clients_raw)) {
-    $clients = $clients_raw;
+     $clients = $clients_raw;
 } else {
-    // A mensagem de falha será exibida se o array não for retornado (problema de conexão ou controller)
+    // Exibirá uma mensagem se a listagem falhar (ex: por causa da consulta SQL)
     $message = (empty($message) ? "❌ " : $message . " | ") . "Falha ao carregar a lista de clientes. Verifique a conexão com o banco.";
     $clients = [];
 }
@@ -316,7 +318,10 @@ $active_tab = $_GET['tab'] ?? 'create';
                 const cpf = selectedOption.dataset.cpf || '';
                 
                 if (action === 'alter') {
-                    // Preenche o campo CPF que será usado como chave WHERE na submissão
+                    // CORREÇÃO JS: Preenche o campo hidden com o CPF ORIGINAL (chave WHERE)
+                    document.getElementById('cpf_original_alterar').value = cpf; 
+
+                    // Preenche o campo CPF que será usado como NOVO VALOR na submissão
                     document.getElementById('alter_cpf').value = cpf; 
                     
                     // Preenche campos visíveis com dados do cliente
@@ -351,7 +356,7 @@ $active_tab = $_GET['tab'] ?? 'create';
             const confirmBtn = document.getElementById('confirm-delete-btn');
             const cancelBtn = document.getElementById('cancel-delete-btn');
             
-            // FIX: Remove o uso do confirm() padrão do navegador
+            // Remove o uso do confirm() padrão do navegador
             if (deleteButton) {
                 deleteButton.addEventListener('click', (e) => {
                     e.preventDefault(); // Impede a submissão padrão do formulário
@@ -363,6 +368,8 @@ $active_tab = $_GET['tab'] ?? 'create';
             if (confirmBtn) {
                 confirmBtn.addEventListener('click', () => {
                     modal.style.display = 'none';
+                    // Melhoria: Garante que o CPF mais recentemente selecionado está no campo hidden
+                    selectClient('delete'); 
                     // Submete o formulário manualmente
                     deleteForm.submit(); 
                 });
@@ -391,7 +398,6 @@ $active_tab = $_GET['tab'] ?? 'create';
             </div>
         <?php endif; ?>
 
-        <!-- Navegação de Abas -->
         <div class="tabs">
             <a href="?tab=create" class="tab-button <?php echo $active_tab == 'create' ? 'active' : ''; ?>">CRIAR</a>
             <a href="?tab=read" class="tab-button <?php echo $active_tab == 'read' ? 'active' : ''; ?>">LISTAR/LER</a>
@@ -401,7 +407,6 @@ $active_tab = $_GET['tab'] ?? 'create';
         
         <div class="tab-content">
 
-            <!-- --- TAB: CRIAR (CREATE) --- -->
             <?php if ($active_tab == 'create'): ?>
                 <h2>Novo Cadastro</h2>
                 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>?tab=create" method="POST">
@@ -437,7 +442,6 @@ $active_tab = $_GET['tab'] ?? 'create';
                 </form>
             <?php endif; ?>
 
-            <!-- --- TAB: LISTAR (READ) --- -->
             <?php if ($active_tab == 'read'): ?>
                 <h2>Lista de Clientes Registrados</h2>
                 
@@ -456,12 +460,11 @@ $active_tab = $_GET['tab'] ?? 'create';
                             <tbody>
                                 <?php foreach ($clients as $client): ?>
                                     <tr>
-                                        <!-- Note: Usamos $client['id_cliente'] pois o DAO retorna um array associativo -->
-                                        <td><?php echo htmlspecialchars($client['id_cliente'] ?? 'N/A'); ?></td>
-                                        <td><?php echo htmlspecialchars($client['nome'] ?? ''); ?></td>
-                                        <td><?php echo htmlspecialchars($client['cpf'] ?? ''); ?></td>
-                                        <td><?php echo htmlspecialchars($client['cep'] ?? ''); ?></td>
-                                        <td><?php echo htmlspecialchars($client['telefone'] ?? ''); ?></td>
+                                        <td><?php echo htmlspecialchars($client['Id_cliente'] ?? 'N/A'); ?></td>
+                                        <td><?php echo htmlspecialchars($client['Nome'] ?? ''); ?></td>
+                                        <td><?php echo htmlspecialchars($client['CPF'] ?? ''); ?></td>
+                                        <td><?php echo htmlspecialchars($client['CEP'] ?? ''); ?></td>
+                                        <td><?php echo htmlspecialchars($client['Telefone'] ?? ''); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
@@ -472,7 +475,6 @@ $active_tab = $_GET['tab'] ?? 'create';
                 <?php endif; ?>
             <?php endif; ?>
 
-            <!-- --- TAB: ALTERAR (UPDATE) - CPF-BASED --- -->
             <?php if ($active_tab == 'alter'): ?>
                 <h2>Alterar Cadastro (Busca por CPF)</h2>
                 
@@ -480,24 +482,24 @@ $active_tab = $_GET['tab'] ?? 'create';
                     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>?tab=alter" method="POST">
                         <input name="acao" value="alterar" type="hidden">
                         
+                        <input name="cpf_original_alterar" id="cpf_original_alterar" type="hidden">
+
                         <div class="form-group">
                             <label for="alter_client_cpf">Selecione o Cliente pelo CPF Atual</label>
                             <select id="alter_client_cpf" required>
                                 <?php foreach ($clients as $client): ?>
-                                    <!-- CPF é a chave para a busca e para a submissão -->
-                                    <option value="<?php echo htmlspecialchars($client['cpf']); ?>"
-                                        data-cpf="<?php echo htmlspecialchars($client['cpf']); ?>"
-                                        data-nome="<?php echo htmlspecialchars($client['nome']); ?>"
-                                        data-cep="<?php echo htmlspecialchars($client['cep']); ?>"
-                                        data-telefone="<?php echo htmlspecialchars($client['telefone']); ?>">
-                                        CPF: <?php echo htmlspecialchars($client['cpf']); ?> (<?php echo htmlspecialchars($client['nome']); ?>)
+                                    <option value="<?php echo htmlspecialchars($client['CPF']); ?>"
+                                        data-cpf="<?php echo htmlspecialchars($client['CPF']); ?>"
+                                        data-nome="<?php echo htmlspecialchars($client['Nome']); ?>"
+                                        data-cep="<?php echo htmlspecialchars($client['CEP']); ?>"
+                                        data-telefone="<?php echo htmlspecialchars($client['Telefone']); ?>">
+                                        CPF: <?php echo htmlspecialchars($client['CPF']); ?> (<?php echo htmlspecialchars($client['Nome']); ?>)
                                     </option>
                                 <?php endforeach; ?>
                             </select>
                             <small style="color: #555; display: block; margin-top: 5px;">Atenção: A atualização será feita no CPF selecionado acima.</small>
                         </div>
                         
-                        <!-- Campos para os novos dados -->
                         <div class="form-group">
                             <label for="alter_name">Nome Completo</label>
                             <input type="text" id="alter_name" name="nome" required>
@@ -532,44 +534,36 @@ $active_tab = $_GET['tab'] ?? 'create';
                 <?php endif; ?>
             <?php endif; ?>
 
-            <!-- --- TAB: DELETAR (DELETE) - CPF-BASED --- -->
             <?php if ($active_tab == 'delete'): ?>
                 <h2>Deletar Cadastro (Busca por CPF)</h2>
                 
                 <?php if (count($clients) > 0): ?>
-                    <!-- Adicionado ID para JS -->
-                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>?tab=delete" method="POST" id="delete-form">
+                    <form action="<?php echo htmlspecialchars($_SERVER['PHP-SELF']); ?>?tab=delete" method="POST" id="delete-form">
                         <input name="acao" value="deletar" type="hidden">
-                        <!-- Campo escondido, preenchido pelo JS com o CPF selecionado, crucial para a deleção -->
                         <input name="cpf_deletar" id="delete_cpf_deletar" type="hidden">
 
                         <div class="form-group">
                             <label for="delete_client_cpf">Selecione o Cliente pelo CPF para Deletar</label>
                             <select id="delete_client_cpf" required>
                                 <?php foreach ($clients as $client): ?>
-                                    <option value="<?php echo htmlspecialchars($client['cpf']); ?>"
-                                        data-cpf="<?php echo htmlspecialchars($client['cpf']); ?>">
-                                        CPF: <?php echo htmlspecialchars($client['cpf']); ?> (<?php echo htmlspecialchars($client['nome']); ?>)
+                                    <option value="<?php echo htmlspecialchars($client['CPF']); ?>"
+                                        data-cpf="<?php echo htmlspecialchars($client['CPF']); ?>">
+                                        CPF: <?php echo htmlspecialchars($client['CPF']); ?> (<?php echo htmlspecialchars($client['Nome']); ?>)
                                     </option>
                                 <?php endforeach; ?>
                             </select>
                             <small style="color: #e53935; display: block; margin-top: 10px;">Atenção: A deleção é permanente e usa o CPF como chave!</small>
                         </div>
                         
-                        <!-- Alterado para type="button" e adicionado ID para chamar o Modal -->
                         <button type="button" class="btn-submit btn-delete" id="delete-submit-btn">DELETAR Cliente Selecionado</button>
                     </form>
                 <?php else: ?>
                     <p class="no-records">Não há clientes para deletar.</p>
                 <?php endif; ?>
             <?php endif; ?>
-        </div> <!-- end tab-content -->
-    </div> <!-- end container -->
-
-    <!-- Modal Customizado para Confirmação de Deleção -->
-    <div id="delete-modal" class="modal">
+        </div> </div> <div id="delete-modal" class="modal">
         <div class="modal-content">
-            <p><strong>Confirmação de Deleção</strong></p>
+            <p><strong>Confirmação de Exclusão</strong></p>
             <p style="margin-top: 10px;">Tem certeza que deseja **DELETAR** este cliente pelo CPF? Esta ação é **irreversível**.</p>
             <div class="modal-buttons">
                 <button class="modal-btn" id="cancel-delete-btn">Cancelar</button>
