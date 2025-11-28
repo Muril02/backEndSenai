@@ -84,7 +84,7 @@ $lista = $controller->lerLivros();
     <hr>
 
 
-    <h2>Biblioteca</h2>
+    <h2>Registro</h2>
     <?php if (empty($lista)): ?>
         <p>Nenhum livro cadastrado.</p>
     <?php else: ?>
