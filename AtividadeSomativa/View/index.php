@@ -20,6 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
     }
 
+    header("Location: " . $_SERVER["PHP_SELF"]);
+    exit;
+
 }
 
 $lista = $controller->lerLivros();
