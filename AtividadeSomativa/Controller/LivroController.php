@@ -22,13 +22,13 @@ class LivroController {
     }
 
     // Atualiza bebida existente
-    public function atualizar( $nomeOriginal,Livro $livro ) {
-        $this->dao->AlterarLivro($livro , $nomeOriginal);
+    public function atualizar( $id,Livro $livro ) {
+        $this->dao->AlterarLivro($livro , $id);
     }
 
     // Exclui bebida
-    public function deletar($nome) {
-        $this->dao->Excluir($nome);
+    public function deletar($id) {
+        $this->dao->Excluir($id);
     }
 }
 ?>

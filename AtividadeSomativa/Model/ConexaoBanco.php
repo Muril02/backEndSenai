@@ -8,20 +8,26 @@ class ConexaoBanco{
 
         if(self::$conexao == null){
             
-            $dsn = "mysql:host=localhost;dbname=Bibilioteca;charset=utf8";
-            $senha = "Murilo1235@";
+            // $dsn = "mysql:host=localhost;dbname=Biblioteca;charset=utf8";
+
+            $host = "localhost";
+            $dbname = "Biblioteca";
+            $senha = "Murilo1235";
             $user = "root";
             try{
                 self::$conexao = new PDO(
-                    $dsn,
+                    "mysql:host=$host;charset=utf8",
                     $user,
                     $senha
                 );
 
                 self::$conexao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            }catch(PDOException $e){
-                error_log( $e->getMessage());
                 
+                self::$conexao->exec("CREATE DATABASE IF NOT EXISTS $dbname CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+                self::$conexao->exec("USE $dbname");
+
+            }catch(PDOException $e){
+                die( $e->getMessage());
             }
         }
         return self::$conexao;
