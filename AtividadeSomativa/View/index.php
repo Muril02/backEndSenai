@@ -115,7 +115,7 @@ $lista = $controller->lerLivros();
                                     onclick="return confirm('Tem certeza que deseja deletar <?php echo htmlspecialchars($livro['Titulo']); ?>?');">Deletar</button>
                             </form>
                             <button
-                                    onclick="onclick=exibirEdit(); pegarValores(
+                                    onclick="exibirEdit(); pegarValores(
                                         '<?php echo htmlspecialchars($livro['Titulo']); ?>',
                                         '<?php echo htmlspecialchars($livro['Autor']); ?>',    
                                         '<?php echo htmlspecialchars($livro['Ano']); ?>',    
